@@ -8,8 +8,6 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -31,4 +29,16 @@ body {
   background-position: top center;
   background-size: auto 374px;
   background-color: #80ac74;
+}
+
+@media (min-width: 537px) and (max-width: 650px) {
+  .poke-bg {
+    background-size: auto 420px;
+  }
+}
+
+@media (min-width: 651px) {
+  .poke-bg {
+    background-size: auto 420px;
+  }
 }
