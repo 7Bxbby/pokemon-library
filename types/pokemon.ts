@@ -59,6 +59,12 @@ export interface Pokemon {
     baseExperience: number;
 }
 
+// Simplified data for list view
+export interface PokemonListItem {
+    name: string;
+    image: string;
+}
+
 export interface PokemonListResponse {
     count: number;
     next: string | null;
