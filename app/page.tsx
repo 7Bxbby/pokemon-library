@@ -1,4 +1,4 @@
-import {Search, Sun} from 'lucide-react';
+import {Search} from 'lucide-react';
 import Image from "next/image";
 import logo from "@/public/logo.png";
 import { mockPokemonList } from "@/mock/pokemonList";
