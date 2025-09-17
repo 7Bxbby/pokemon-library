@@ -1,20 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-image: url("@/public/sky.jpg");
+  --bg-fill: #80ac74;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html.dark {
+  --bg-image: url("@/public/dark-sky.jpg");
+  --bg-fill: #050e15;
 }
 
 body {
@@ -24,11 +17,11 @@ body {
 }
 
 .poke-bg {
-  background-image: url("@/public/sky.jpg");
+  background-image: var(--bg-image);
   background-repeat: repeat-x;
   background-position: top center;
   background-size: auto 374px;
-  background-color: #80ac74;
+  background-color: var(--bg-fill);
 }
 
 @media (min-width: 537px) and (max-width: 650px) {
