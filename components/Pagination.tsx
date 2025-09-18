@@ -21,9 +21,9 @@ export default function Pagination({ page, totalPages, loading, onPageChange }: 
     };
 
     const baseBtn =
-        "px-3 py-2 rounded-lg text-xs min-[300px]:text-md min-[400px]:text-lg border border-white/20 text-white/90 hover:bg-white/10 transition disabled:opacity-50 disabled:pointer-events-none";
+        "px-3 py-2 rounded-lg cursor-pointer text-xs min-[300px]:text-md min-[400px]:text-lg border border-white/20 text-white/90 hover:bg-white/10 transition disabled:opacity-50 disabled:pointer-events-none";
     const activeBtn =
-        "px-3 py-2 rounded-lg text-xs min-[300px]:text-md min-[400px]:text-lg bg-white/20 border border-white/20 text-white font-semibold";
+        "px-3 py-2 rounded-lg cursor-default text-xs min-[300px]:text-md min-[400px]:text-lg bg-white/20 border border-white/20 text-white font-semibold";
 
     return (
         <nav className="flex items-center gap-0.5 min-[300px]:gap-2 justify-center select-none">
