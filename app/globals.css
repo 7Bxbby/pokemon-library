@@ -2,6 +2,21 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.fade-in-up {
+  animation: fade-in-up 500ms cubic-bezier(.22,.61,.36,1) both;
+}
+
 :root {
   --bg-image: url("@/public/sky.jpg");
   --bg-fill: #80ac74;
