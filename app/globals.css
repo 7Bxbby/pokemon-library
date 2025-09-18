@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --bg-image: url("@/public/sky.jpg");
   --bg-fill: #80ac74;
