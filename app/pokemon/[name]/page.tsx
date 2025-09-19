@@ -1,16 +1,18 @@
 'use client'
 
-import React, {use, useCallback, useEffect, useState} from "react";
-import { useRouter } from "next/navigation";
+import React, {use, useCallback, useEffect, useRef, useState} from "react";
 import { Heart, Star, Wind, Swords, Shield, Activity} from 'lucide-react';
 import { Pokemon } from "@/types/pokemon";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import StatRow from "@/components/StatRow";
+import Image from "next/image";
+import ErrorImage from '@/public/pokemon-placeholder.webp';
+import Link from "next/link";
 
 
 export default function PokemonDetailPage({ params }: { params: Promise<{ name: string }> }) {
     const { name } = use(params);
-    const router = useRouter();
+    const detailsRef = useRef<HTMLDivElement | null>(null);
     const [pokemon, setPokemon] = useState<Pokemon | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -48,9 +50,16 @@ export default function PokemonDetailPage({ params }: { params: Promise<{ name: 
         void load(name);
     }, [name, load]);
 
+    useEffect(() => {
+        if (!loading && pokemon) {
+            detailsRef.current?.scrollIntoView({ behavior: "smooth" }); // Przewiń do sekcji detali
+        }
+    }, [loading, pokemon]);
+
+
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
+            <div className="mt-16 flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-white dark:border-black mx-auto"></div>
                     <p className="mt-4 text-white dark:text-black text-xl">Loading Pokémon...</p>
@@ -61,21 +70,20 @@ export default function PokemonDetailPage({ params }: { params: Promise<{ name: 
 
     if (error || !pokemon) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="text-center">
-                    <p className="text-red-500 text-xl mb-4">Error: {error}</p>
-                    <button
-                        onClick={() => router.back()}
-                        className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg transition-colors"
-                    >
-                        Go Back
-                    </button>
-                </div>
+            <div className="mt-12 flex items-center flex-col gap-4 justify-center text-center">
+                <Image src={ErrorImage} alt="Error Image" width={180} height={180}/>
+                <p className="text-red-500 font-bold text-xl mb-4">{error}</p>
+                <Link
+                    href="/"
+                    className="border-1 border-white cursor-pointer text-gray-100 px-6 py-3 rounded-lg transition-colors backdrop-blur-md hover:bg-white/10 hover:text-white"
+                >
+                    Back to List
+                </Link>
             </div>
         );
     }
     return (
-        <div className="min-h-screen max-[450px]:px-0 px-4 pb-8 text-white">
+        <div className="min-h-screen max-[450px]:px-0 px-4 pb-8 text-white scroll-m-6" ref={detailsRef}>
             <div className="mx-auto max-w-[1100px]">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-[450px]:px-1 p-8">
                     <div className="space-y-8 order-2 lg:order-1">
