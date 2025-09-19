@@ -15,21 +15,15 @@ export default function ImageWithFallback({
     height: number;
 }) {
     const [imageUrl, setImageUrl] = useState(src);
-    const [attempts, setAttempts] = useState(2);
     const imageFallback = "https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/0.png";
     const fallbackHome = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${id}.png`;
 
     const handleError = () => {
-        setAttempts(prev => {
-            const next = prev - 1;
-
-            if (next === 1) {
-                setImageUrl(fallbackHome);
-            } else if (next <= 0) {
-                setImageUrl(imageFallback);
-            }
-            return next;
-        });
+        if (imageUrl === src) {
+            setImageUrl(fallbackHome);
+        } else if (imageUrl === fallbackHome) {
+            setImageUrl(imageFallback);
+        }
     };
 
 
