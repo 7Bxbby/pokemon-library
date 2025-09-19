@@ -68,5 +68,5 @@ export interface PokemonListItem {
 
 export interface PokemonListResponse {
     count: number;
-    pokemons: Array<PokemonListResponse>;
+    pokemons: Array<PokemonListItem>;
 }

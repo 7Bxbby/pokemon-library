@@ -9,7 +9,8 @@ import ThemeToggle from "@/components/ThemeToggle";
 import {useCallback, useEffect, useMemo, useState} from "react";
 import Pagination from "@/components/Pagination";
 import { useRouter, useSearchParams } from "next/navigation";
-import {PokemonListResponse} from "@/types/pokemon";
+import {PokemonListItem, PokemonListResponse} from "@/types/pokemon";
+import {ITEMS_LIMIT} from "@/lib/pokemon-utils";
 
 export default function Home() {
     const router = useRouter();
@@ -22,7 +23,7 @@ export default function Home() {
     const [page, setPage] = useState(initialPage);
     const [totalPages, setTotalPages] = useState<number>(1);
 
-    const [pokemonList, setPokemonList] = useState<{ name: string; image: string }[]>([]);
+    const [pokemonList, setPokemonList] = useState<PokemonListItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
@@ -30,11 +31,11 @@ export default function Home() {
         try {
             setLoading(true);
             setError('');
-            const offset = (pageToLoad - 1) * 12;
+            const offset = (pageToLoad - 1) * ITEMS_LIMIT;
             const response = await fetch(`/api/pokemon?offset=${offset}`);
             const data:PokemonListResponse = await response.json();
             setPokemonList(data.pokemons);
-            setTotalPages(Math.max(1, Math.ceil(data.count / 12)));
+            setTotalPages(Math.max(1, Math.ceil(data.count / ITEMS_LIMIT)));
         } catch (e: unknown) {
             setPokemonList([]);
             setTotalPages(1);
