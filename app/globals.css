@@ -20,15 +20,17 @@
 :root {
   --bg-image: url("@/public/sky.jpg");
   --bg-fill: #80ac74;
+  --bg-top: #79caf9;
 }
 
 html.dark {
   --bg-image: url("@/public/dark-sky.jpg");
   --bg-fill: #050e15;
+  --bg-top: #040b28;
 }
 
 body {
-  background: white;
+  background: linear-gradient(to bottom, var(--bg-top), var(--bg-fill));
   color: black;
   font-family: Arial, Helvetica, sans-serif;
 }
