@@ -9,6 +9,7 @@ import Image from "next/image";
 import ErrorImage from '@/public/pokemon-placeholder.webp';
 import Link from "next/link";
 import PokemonAbilities from "@/components/PokemonAbilities";
+import PokemonTypes from "@/components/PokemonTypes";
 
 
 export default function PokemonDetailPage({ params }: { params: Promise<{ name: string }> }) {
@@ -92,9 +93,9 @@ export default function PokemonDetailPage({ params }: { params: Promise<{ name: 
                             <div className="flex items-center gap-3">
                                 <h1 className="text-5xl font-extrabold capitalize tracking-tight">{pokemon.name}</h1>
                             </div>
-                            <p className="text-emerald-300 font-semibold capitalize">
-                                {pokemon.types.join(" · ")}
-                            </p>
+
+                            <PokemonTypes types={pokemon.types} />
+
                             <p className="max-w-prose text-white/70">
                                 A balanced Pokémon with versatile moves and solid survivability.
                             </p>
@@ -132,9 +133,9 @@ export default function PokemonDetailPage({ params }: { params: Promise<{ name: 
                             <div className="flex items-center">
                                 <h1 className="max-[280px]:text-2xl mx-auto text-center text-4xl font-extrabold capitalize tracking-tight">{pokemon.name}</h1>
                             </div>
-                            <div className="text-emerald-300 w-fit font-semibold mx-auto capitalize">
-                                {pokemon.types.join(" · ")}
-                            </div>
+
+                            <PokemonTypes types={pokemon.types} />
+
                             <div className="text-white/70 text-center px-1 break-words">
                                 A balanced Pokémon with versatile moves and solid survivability.
                             </div>
