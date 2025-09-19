@@ -24,7 +24,7 @@ export default function PokemonListSection({ onPageChange }: PokemonListSectionP
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
-    const load = useCallback(async (pageToLoad: number) => {
+    const fetchPokemonList = useCallback(async (pageToLoad: number) => {
         try {
             setLoading(true);
             setError('');
@@ -47,8 +47,8 @@ export default function PokemonListSection({ onPageChange }: PokemonListSectionP
     }, []);
 
     useEffect(() => {
-        void load(page);
-    }, [page, load]);
+        void fetchPokemonList(page);
+    }, [page, fetchPokemonList]);
 
     return (
         <div className="flex flex-col justify-center items-center pb-16">
