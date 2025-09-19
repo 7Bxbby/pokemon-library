@@ -1,11 +1,12 @@
 'use client'
 
-import {use, useCallback, useEffect, useState} from "react";
+import React, {use, useCallback, useEffect, useState} from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { ArrowLeft, Heart, Ruler, Weight, Star, Zap } from 'lucide-react';
+import { Heart, Star, Wind, Swords, Shield, Activity} from 'lucide-react';
 import { Pokemon } from "@/types/pokemon";
-import ThemeToggle from "@/components/ThemeToggle";
+import ImageWithFallback from "@/components/ImageWithFallback";
+import StatRow from "@/components/StatRow";
+
 
 export default function PokemonDetailPage({ params }: { params: Promise<{ name: string }> }) {
     const { name } = use(params);
@@ -47,43 +48,9 @@ export default function PokemonDetailPage({ params }: { params: Promise<{ name: 
         void load(name);
     }, [name, load]);
 
-    // Helper function for type colors
-    const getTypeColor = (type: string): string => {
-        const typeColors: Record<string, string> = {
-            fire: 'bg-red-500',
-            water: 'bg-blue-500',
-            grass: 'bg-green-500',
-            electric: 'bg-yellow-500',
-            psychic: 'bg-pink-500',
-            ice: 'bg-cyan-300',
-            dragon: 'bg-purple-600',
-            dark: 'bg-gray-800',
-            fairy: 'bg-pink-300',
-            normal: 'bg-gray-400',
-            fighting: 'bg-red-600',
-            poison: 'bg-purple-500',
-            ground: 'bg-yellow-600',
-            flying: 'bg-blue-300',
-            bug: 'bg-green-400',
-            rock: 'bg-yellow-800',
-            ghost: 'bg-purple-400',
-            steel: 'bg-gray-500',
-        };
-        return typeColors[type] || 'bg-gray-500';
-    };
-
-    // Helper function for stat colors
-    const getStatColor = (value: number): string => {
-        if (value >= 100) return 'bg-green-500';
-        if (value >= 70) return 'bg-yellow-500';
-        if (value >= 40) return 'bg-orange-500';
-        return 'bg-red-500';
-    };
-
     if (loading) {
         return (
-            <div className="min-h-screen poke-bg flex items-center justify-center">
-                <ThemeToggle />
+            <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-white dark:border-black mx-auto"></div>
                     <p className="mt-4 text-white dark:text-black text-xl">Loading Pokémon...</p>
@@ -94,8 +61,7 @@ export default function PokemonDetailPage({ params }: { params: Promise<{ name: 
 
     if (error || !pokemon) {
         return (
-            <div className="min-h-screen poke-bg flex items-center justify-center">
-                <ThemeToggle />
+            <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
                     <p className="text-red-500 text-xl mb-4">Error: {error}</p>
                     <button
@@ -108,159 +74,90 @@ export default function PokemonDetailPage({ params }: { params: Promise<{ name: 
             </div>
         );
     }
-
     return (
-        <div className="min-h-screen poke-bg">
-            <ThemeToggle />
-
-            {/* Header with back button */}
-            <div className="container mx-auto px-4 pt-8">
-                <button
-                    onClick={() => router.back()}
-                    className="flex items-center gap-2 text-white dark:text-black hover:opacity-80 transition-opacity mb-6"
-                >
-                    <ArrowLeft className="w-6 h-6" />
-                    <span className="text-lg font-semibold">Back to Pokédex</span>
-                </button>
-
-                {/* Main Pokemon Info */}
-                <div className="bg-white/10 dark:bg-black/10 backdrop-blur-md rounded-3xl shadow-2xl overflow-hidden">
-                    <div className="relative">
-                        {/* Pokemon Image & Basic Info */}
-                        <div className="flex flex-col lg:flex-row items-center p-8">
-                            <div className="lg:w-1/2 text-center lg:text-left">
-                                <h1 className="text-4xl lg:text-6xl font-bold text-white capitalize mb-4">
-                                    {pokemon.name}
-                                </h1>
-                                <p className="text-2xl text-white/80 mb-6">
-                                    #{pokemon.id.toString().padStart(3, '0')}
-                                </p>
-
-                                {/* Types */}
-                                <div className="flex gap-3 justify-center lg:justify-start mb-6">
-                                    {pokemon.types.map((type) => (
-                                        <span
-                                            key={type}
-                                            className={`${getTypeColor(type)} text-white px-4 py-2 rounded-full text-lg font-semibold capitalize`}
-                                        >
-                                            {type}
-                                        </span>
-                                    ))}
-                                </div>
-
-                                {/* Basic Stats */}
-                                <div className="grid grid-cols-2 gap-4 max-w-md">
-                                    <div className="bg-white/20 dark:bg-black/20 rounded-xl p-4 text-center">
-                                        <Ruler className="w-6 h-6 mx-auto mb-2 text-white" />
-                                        <p className="text-white/80  text-sm">Height</p>
-                                        <p className="text-white text-xl font-bold">
-                                            {pokemon.height} m
-                                        </p>
-                                    </div>
-                                    <div className="bg-white/20 dark:bg-black/20 rounded-xl p-4 text-center">
-                                        <Weight className="w-6 h-6 mx-auto mb-2 text-white" />
-                                        <p className="text-white/80 text-sm">Weight</p>
-                                        <p className="text-white text-xl font-bold">
-                                            {pokemon.weight} kg
-                                        </p>
-                                    </div>
-                                </div>
+        <div className="min-h-screen max-[450px]:px-0 px-4 pb-8 text-white">
+            <div className="mx-auto max-w-[1100px]">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-[450px]:px-1 p-8">
+                    <div className="space-y-8 order-2 lg:order-1">
+                        <div className="space-y-4 hidden lg:block">
+                            <div className="flex items-center gap-3">
+                                <h1 className="text-5xl font-extrabold capitalize tracking-tight">{pokemon.name}</h1>
                             </div>
+                            <p className="text-emerald-300 font-semibold capitalize">
+                                {pokemon.types.join(" · ")}
+                            </p>
+                            <p className="max-w-prose text-white/70">
+                                A balanced Pokémon with versatile moves and solid survivability.
+                            </p>
+                        </div>
+                        <div>
+                            <div className="mb-6 px-4 flex items-center gap-3">
+                                <Star className="size-7" />
+                                <h2 className="text-3xl font-bold">Base Stats</h2>
+                            </div>
+                            <div className="space-y-4 px-4">
+                                <StatRow label="HP" icon={<Heart className="size-4 text-emerald-300" />} value={pokemon.stats.hp} />
+                                <StatRow label="Attack" icon={<Swords className="size-4 text-rose-300" />} value={pokemon.stats.attack}/>
+                                <StatRow label="Defense" icon={<Shield className="size-4 text-sky-300" />} value={pokemon.stats.defense}/>
+                                <StatRow label="Sp. Attack" icon={<Activity className="size-4 text-amber-300" />} value={pokemon.stats.specialAttack}/>
+                                <StatRow label="Sp. Defense" icon={<Shield className="size-4 text-violet-300" />} value={pokemon.stats.specialDefense}/>
+                                <StatRow label="Speed" icon={<Wind className="size-4 text-yellow-300" />} value={pokemon.stats.speed}/>
+                            </div>
+                        </div>
+                        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+                            <StatRow label="Total Stats" icon={<Star className="size-4 text-yellow-300" />} value={pokemon.stats.total} max={720} />
 
-                            {/* Pokemon Image */}
-                            <div className="lg:w-1/2 flex justify-center">
-                                <div className="relative">
-                                    <div className="absolute bottom-8 w-48 h-12 bg-black/20 dark:bg-white/20 rounded-full blur-xl"></div>
-                                    <Image
-                                        src={pokemon.image}
-                                        alt={pokemon.name}
-                                        width={300}
-                                        height={300}
-                                        className="relative z-10 drop-shadow-2xl"
+                            <div className="mt-8">
+                                <p className="mb-2 text-white/70 text-sm">Base Experience</p>
+                                <div className={'h-3 w-full rounded-full bg-black/20 dark:bg-white/10 overflow-hidden'}>
+                                    <div
+                                        className={`w-0 h-full rounded-full transition-[width] duration-700 ease-out bg-yellow-400`}
                                     />
                                 </div>
+                                <div className="mt-2 text-right font-semibold">{pokemon.baseExperience} XP</div>
                             </div>
                         </div>
-
-                        {/* Stats Section */}
-                        <div className="px-8 pb-8">
-                            <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-2">
-                                <Zap className="w-8 h-8" />
-                                Base Stats
-                            </h2>
-
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                {/* Individual Stats */}
-                                <div className="space-y-4">
-                                    {[
-                                        { name: 'HP', value: pokemon.stats.hp },
-                                        { name: 'Attack', value: pokemon.stats.attack },
-                                        { name: 'Defense', value: pokemon.stats.defense },
-                                        { name: 'Sp. Attack', value: pokemon.stats.specialAttack },
-                                        { name: 'Sp. Defense', value: pokemon.stats.specialDefense },
-                                        { name: 'Speed', value: pokemon.stats.speed },
-                                    ].map((stat) => (
-                                        <div key={stat.name} className="flex items-center gap-4">
-                                            <div className="w-24 text-white font-semibold">
-                                                {stat.name}
-                                            </div>
-                                            <div className="flex-1 bg-white/20 dark:bg-black/20 rounded-full h-4 overflow-hidden">
-                                                <div
-                                                    className={`h-full ${getStatColor(stat.value)} transition-all duration-1000 ease-out`}
-                                                    style={{ width: `${Math.min((stat.value / 200) * 100, 100)}%` }}
-                                                />
-                                            </div>
-                                            <div className="w-12 text-white font-bold text-right">
-                                                {stat.value}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-
-                                {/* Total Stats */}
-                                <div className="bg-white/20 dark:bg-black/20 rounded-xl p-6">
-                                    <div className="text-center">
-                                        <Star className="w-12 h-12 mx-auto mb-4 text-yellow-400" />
-                                        <p className="text-white/80 text-lg">Total Stats</p>
-                                        <p className="text-white text-4xl font-bold">
-                                            {pokemon.stats.total}
-                                        </p>
-                                    </div>
-                                    <div className="mt-6">
-                                        <p className="text-white/80 text-sm mb-2">Base Experience</p>
-                                        <p className="text-white text-2xl font-bold">
-                                            {pokemon.baseExperience} XP
-                                        </p>
-                                    </div>
-                                </div>
+                    </div>
+                    <div className="mx-auto flex flex-col order-1 lg:order-2">
+                        <div className="space-y-4 block lg:hidden min-w-0">
+                            <div className="flex items-center">
+                                <h1 className="max-[280px]:text-2xl mx-auto text-center text-4xl font-extrabold capitalize tracking-tight">{pokemon.name}</h1>
+                            </div>
+                            <div className="text-emerald-300 w-fit font-semibold mx-auto capitalize">
+                                {pokemon.types.join(" · ")}
+                            </div>
+                            <div className="text-white/70 text-center px-1 break-words">
+                                A balanced Pokémon with versatile moves and solid survivability.
                             </div>
                         </div>
-
-                        {/* Abilities Section */}
-                        <div className="px-8 pb-8">
-                            <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-2">
-                                <Heart className="w-8 h-8" />
-                                Abilities
-                            </h2>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                {pokemon.abilities.map((ability, index) => (
+                        <div className="relative group pb-24 mt-8 min-w-[390px]:mt-0 flex items-center justify-center">
+                            <div className="rotate-x-180 rotate-90 rotate-y-80 absolute max-[360px]:bottom-0 -bottom-5 left-1/2 -translate-x-1/2 max-[360px]:h-40 max-[360px]:w-35 h-70 w-60 rounded-full bg-gray-900/50 dark:bg-gray-100/20 blur-md group-hover:bg-gray-900/30 dark:group-hover:bg-gray-100/50 transition-all duration-500" />
+                            <ImageWithFallback
+                                id={pokemon.id}
+                                src={pokemon.image}
+                                alt={pokemon.name}
+                                width={360}
+                                height={360}
+                            />
+                        </div>
+                        <div className="border-t border-white/10 p-4 -mt-12">
+                            <h3 className="mb-6 text-2xl font-bold">Abilities</h3>
+                            <div className="flex flex-col gap-4">
+                                {pokemon.abilities.map((a, i) => (
                                     <div
-                                        key={index}
-                                        className={`p-4 rounded-xl border-2 ${
-                                            ability.isHidden
-                                                ? 'bg-yellow-500/20 border-yellow-400 dark:bg-yellow-600/20'
-                                                : 'bg-white/20 border-white/30 dark:bg-black/20 dark:border-black/30'
+                                        key={`${a.name}-${i}`}
+                                        className={`rounded-xl p-4 ring-1 ${
+                                            a.isHidden
+                                                ? "bg-amber-500/15 ring-amber-400/50"
+                                                : "bg-white/5 ring-white/10"
                                         }`}
                                     >
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <h3 className="text-white font-semibold capitalize">
-                                                {ability.name}
-                                            </h3>
-                                            {ability.isHidden && (
-                                                <span className="bg-yellow-500 px-2 py-1 rounded-full text-xs font-bold">
-                                                    Hidden
-                                                </span>
+                                        <div className="flex items-center gap-2">
+                                            <span className="capitalize font-semibold">{a.name}</span>
+                                            {a.isHidden && (
+                                                <span className="rounded-full bg-amber-400/90 px-2 py-0.5 text-xs font-bold text-black">
+                                        Hidden
+                                    </span>
                                             )}
                                         </div>
                                     </div>
