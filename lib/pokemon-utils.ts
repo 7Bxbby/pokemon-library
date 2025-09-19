@@ -42,7 +42,7 @@ export function transformPokemonData(pokemonRaw: PokemonRaw): Pokemon {
     return {
         id: pokemonRaw.id,
         name: pokemonRaw.name.replace('-', ' '),
-        image: pokemonRaw.sprites.front_default || officialArtworkUrl,
+        image: pokemonRaw.sprites.other["official-artwork"].front_default || officialArtworkUrl,
         types,
         abilities,
         stats,
