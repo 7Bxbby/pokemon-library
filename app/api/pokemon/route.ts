@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
-import {parsePokemonList, POKEAPI_BASE_URL} from "@/lib/pokemon-utils";
+import {ITEMS_LIMIT, parsePokemonList, POKEAPI_BASE_URL} from "@/lib/pokemon-utils";
 
 const CACHE_CONTROL_HEADER = "public, max-age=3600, s-maxage=3600, stale-while-revalidate=3600";
-const ITEMS_LIMIT = 12;
 
 
 export async function GET(request: Request) {

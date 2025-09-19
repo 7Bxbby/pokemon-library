@@ -1,6 +1,7 @@
 import {Pokemon, PokemonListItem, PokemonRaw} from "@/types/pokemon";
 
 export const POKEAPI_BASE_URL = 'https://pokeapi.co/api/v2';
+export const ITEMS_LIMIT = 12;
 
 export function parsePokemonList(data: { results: { name: string; url: string }[] }): PokemonListItem[] {
     return data.results.map((p) => {
