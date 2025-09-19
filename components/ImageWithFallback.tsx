@@ -38,7 +38,7 @@ export default function ImageWithFallback({
                 alt={alt}
                 onError={handleError}
                 loading="lazy"
-                className="relative z-10 transition-transform group-hover:-translate-y-3 duration-500
+                className="relative z-10 transition-transform group-hover:-translate-y-3 duration-500 max-[360px]:w-[180px]
                     drop-shadow-[0_4px_8px_rgba(0,0,0,0.3)]
                     dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]"
             />
