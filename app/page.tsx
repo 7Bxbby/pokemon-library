@@ -6,10 +6,10 @@ import logo from "@/public/logo.png";
 import PokemonListDisplay from "@/components/PokemonListDisplay";
 import PokemonListDisplaySkeleton from "@/components/skeleton/PokemonListDisplaySkeleton";
 import ThemeToggle from "@/components/ThemeToggle";
-import {useEffect, useMemo, useState} from "react";
-import {fetchPokemonListFromPokeAPI} from "@/lib/pokemon-utils";
+import {useCallback, useEffect, useMemo, useState} from "react";
 import Pagination from "@/components/Pagination";
 import { useRouter, useSearchParams } from "next/navigation";
+import {PokemonListResponse} from "@/types/pokemon";
 
 export default function Home() {
     const router = useRouter();
@@ -26,12 +26,13 @@ export default function Home() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
-    const load = async (pageToLoad: number) => {
+    const load = useCallback(async (pageToLoad: number) => {
         try {
             setLoading(true);
             setError('');
             const offset = (pageToLoad - 1) * 12;
-            const data = await fetchPokemonListFromPokeAPI(offset);
+            const response = await fetch(`/api/pokemon?offset=${offset}`);
+            const data:PokemonListResponse = await response.json();
             setPokemonList(data.pokemons);
             setTotalPages(Math.max(1, Math.ceil(data.count / 12)));
         } catch (e: unknown) {
@@ -43,20 +44,13 @@ export default function Home() {
                 setError("Something went wrong!");
             }
         } finally {
-            const params = new URLSearchParams(searchParams.toString());
-            if (page === 1) {
-                params.delete("page");
-            } else {
-                params.set("page", String(page));
-            }
-            router.replace(`/?${params.toString()}`, { scroll: false });
             setLoading(false);
         }
-    };
+    }, [])
 
     useEffect(() => {
         void load(page);
-    }, [page]);
+    }, [page, load]);
 
 
     return (
@@ -84,7 +78,19 @@ export default function Home() {
                           page={page}
                           totalPages={totalPages}
                           loading={loading}
-                          onPageChange={(p) => setPage(p)}/>
+                          onPageChangeAction={(p) => {
+                              setPage(p);
+
+                              const params = new URLSearchParams(searchParams.toString());
+                              if (p === 1) {
+                                  params.delete("page");
+                              } else {
+                                  params.set("page", String(p));
+                              }
+
+                              router.replace(`/?${params.toString()}`, { scroll: false });
+
+                          }}/>
                   </div>
                   {loading ? (
                       <PokemonListDisplaySkeleton/>

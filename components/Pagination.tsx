@@ -4,10 +4,10 @@ type Props = {
     page: number;
     totalPages: number;
     loading?: boolean;
-    onPageChange: (page: number) => void;
+    onPageChangeAction: (page: number) => void;
 };
 
-export default function Pagination({ page, totalPages, loading, onPageChange }: Props) {
+export default function Pagination({ page, totalPages, loading, onPageChangeAction }: Props) {
     if (totalPages <= 1) return null;
 
     const windowSize = 0;
@@ -17,7 +17,7 @@ export default function Pagination({ page, totalPages, loading, onPageChange }: 
     for (let p = start; p <= end; p++) pages.push(p);
 
     const go = (p: number) => {
-        if (!loading && p >= 1 && p <= totalPages && p !== page) onPageChange(p);
+        if (!loading && p >= 1 && p <= totalPages && p !== page) onPageChangeAction(p);
     };
 
     const baseBtn =
