@@ -8,6 +8,7 @@ import StatRow from "@/components/StatRow";
 import Image from "next/image";
 import ErrorImage from '@/public/pokemon-placeholder.webp';
 import Link from "next/link";
+import PokemonAbilities from "@/components/PokemonAbilities";
 
 
 export default function PokemonDetailPage({ params }: { params: Promise<{ name: string }> }) {
@@ -17,7 +18,7 @@ export default function PokemonDetailPage({ params }: { params: Promise<{ name: 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
-    const load = useCallback(async (name: string) => {
+    const fetchPokemonDetails = useCallback(async (name: string) => {
         try {
             setLoading(true);
             setError('');
@@ -47,12 +48,12 @@ export default function PokemonDetailPage({ params }: { params: Promise<{ name: 
     }, []);
 
     useEffect(() => {
-        void load(name);
-    }, [name, load]);
+        void fetchPokemonDetails(name);
+    }, [name, fetchPokemonDetails]);
 
     useEffect(() => {
         if (!loading && pokemon) {
-            detailsRef.current?.scrollIntoView({ behavior: "smooth" }); // Przewiń do sekcji detali
+            detailsRef.current?.scrollIntoView({ behavior: "smooth" });
         }
     }, [loading, pokemon]);
 
@@ -151,25 +152,7 @@ export default function PokemonDetailPage({ params }: { params: Promise<{ name: 
                         <div className="border-t border-white/10 p-4 -mt-12">
                             <h3 className="mb-6 text-2xl font-bold">Abilities</h3>
                             <div className="flex flex-col gap-4">
-                                {pokemon.abilities.map((a, i) => (
-                                    <div
-                                        key={`${a.name}-${i}`}
-                                        className={`rounded-xl p-4 ring-1 ${
-                                            a.isHidden
-                                                ? "bg-amber-500/15 ring-amber-400/50"
-                                                : "bg-white/5 ring-white/10"
-                                        }`}
-                                    >
-                                        <div className="flex items-center gap-2">
-                                            <span className="capitalize font-semibold">{a.name}</span>
-                                            {a.isHidden && (
-                                                <span className="rounded-full bg-amber-400/90 px-2 py-0.5 text-xs font-bold text-black">
-                                        Hidden
-                                    </span>
-                                            )}
-                                        </div>
-                                    </div>
-                                ))}
+                                <PokemonAbilities abilities={pokemon.abilities} />
                             </div>
                         </div>
                     </div>
