@@ -61,14 +61,12 @@ export interface Pokemon {
 
 // Simplified data for list view
 export interface PokemonListItem {
+    id: number;
     name: string;
     image: string;
 }
 
 export interface PokemonListResponse {
     count: number;
-    pokemons: Array<{
-        name: string;
-        image: string;
-    }>;
+    pokemons: Array<PokemonListResponse>;
 }
