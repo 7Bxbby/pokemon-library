@@ -1,8 +1,32 @@
-import {Pokemon, PokemonListItem, PokemonRaw} from "@/types/pokemon";
+import {Pokemon, PokemonListItem, PokemonRaw, PokemonType} from "@/types/pokemon";
 
+//constants
 export const POKEAPI_BASE_URL = 'https://pokeapi.co/api/v2';
 export const ITEMS_LIMIT = 12;
 
+export const typesIconMap: PokemonType = {
+    bug: "/pokemonTypeIcons/bug-icon.svg",
+    dark: "/pokemonTypeIcons/dark-icon.svg",
+    dragon: "/pokemonTypeIcons/dragon-icon.svg",
+    electric: "/pokemonTypeIcons/electric-icon.svg",
+    fairy: "/pokemonTypeIcons/fairy-icon.svg",
+    fighting: "/pokemonTypeIcons/fighting-icon.svg",
+    fire: "/pokemonTypeIcons/fire-icon.svg",
+    flying: "/pokemonTypeIcons/flying-icon.svg",
+    ghost: "/pokemonTypeIcons/ghost-icon.svg",
+    grass: "/pokemonTypeIcons/grass-icon.svg",
+    ground: "/pokemonTypeIcons/ground-icon.svg",
+    ice: "/pokemonTypeIcons/ice-icon.svg",
+    normal: "/pokemonTypeIcons/normal-icon.svg",
+    poison: "/pokemonTypeIcons/poison-icon.svg",
+    psychic: "/pokemonTypeIcons/psychic-icon.svg",
+    rock: "/pokemonTypeIcons/rock-icon.svg",
+    steel: "/pokemonTypeIcons/steel-icon.svg",
+    water: "/pokemonTypeIcons/water-icon.svg",
+};
+
+
+//functions
 export function parsePokemonList(data: { results: { name: string; url: string }[] }): PokemonListItem[] {
     return data.results.map((p) => {
         const id = Number(p.url.split("/").filter(Boolean).pop());

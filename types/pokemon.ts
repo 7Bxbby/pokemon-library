@@ -70,3 +70,7 @@ export interface PokemonListResponse {
     count: number;
     pokemons: Array<PokemonListItem>;
 }
+
+export interface PokemonType {
+    [key: string]: string;
+}
