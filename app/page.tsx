@@ -14,7 +14,7 @@ function getUpdatedQueryString(searchParams: URLSearchParams, page: number): str
     return params.toString();
 }
 
-export default function Home() {
+function HomeContent() {
     const { replace } = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -24,9 +24,13 @@ export default function Home() {
         replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
     }, [replace, pathname, searchParams]);
 
+    return <PokemonListSection onPageChange={handlePageChange} />;
+}
+
+export default function Home() {
     return (
         <Suspense fallback={<PokemonListDisplaySkeleton />}>
-            <PokemonListSection onPageChange={handlePageChange} />
+            <HomeContent />
         </Suspense>
     );
 }
