@@ -1,69 +1,41 @@
 'use client';
 
-import { useCallback, useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import Pagination from "@/components/Pagination";
 import PokemonListDisplay from "@/components/PokemonListDisplay";
 import PokemonListDisplaySkeleton from "@/components/skeleton/PokemonListDisplaySkeleton";
-import { PokemonListItem, PokemonListResponse } from "@/types/pokemon";
-import { ITEMS_LIMIT } from "@/lib/pokemon-utils";
-import {useSearchParams} from "next/navigation";
+import {useRouter, useSearchParams} from "next/navigation";
+import {usePokemonSearch} from "@/app/hooks/usePokemonSearch";
+import React, {useState} from "react";
+import { resetPageAndSearch, updatePageParam } from "@/lib/url-utils";
 
-interface PokemonListSectionProps {
-    onPageChange: (page: number) => void;
-}
-
-export default function PokemonListSection({ onPageChange }: PokemonListSectionProps) {
-
+export default function PokemonListSection() {
+    const { pokemonList, totalPages, loading, error } = usePokemonSearch();
     const searchParams = useSearchParams();
-    const initialPage = Number(searchParams.get("page") ?? "1");
+    const { push } = useRouter();
 
-    const [searchHolder, setSearchHolder] = useState('');
-    const [searchQuery, setSearchQuery] = useState('');
+    const [searchInput, setSearchInput] = useState(searchParams.get("search") ?? "");
+    const currentPage = Number(searchParams.get("page") ?? "1");
 
-    const [page, setPage] = useState(initialPage);
-    const [totalPages, setTotalPages] = useState<number>(1);
-    const [pokemonList, setPokemonList] = useState<PokemonListItem[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
-
-    const clearSearch = () => {
-        setSearchHolder('');
-        setSearchQuery('');
-        setPage(1);
-    }
-
-    const fetchPokemonList = useCallback(async (pageToLoad: number, sq: string) => {
-        try {
-            setLoading(true);
-            setError('');
-            const offset = (pageToLoad - 1) * ITEMS_LIMIT;
-
-            const response = sq ? await fetch(`/api/pokemon/search?name=${sq}&offset=${offset}`) : await fetch(`/api/pokemon?offset=${offset}`);
-
-            const data: PokemonListResponse = await response.json();
-            setPokemonList(data.pokemons);
-            setTotalPages(Math.max(1, Math.ceil(data.count / ITEMS_LIMIT)));
-        } catch (e: unknown) {
-            setPokemonList([]);
-            setTotalPages(1);
-            if (e instanceof Error) {
-                setError(e.message);
-            } else {
-                setError("Something went wrong!");
-            }
-        } finally {
-            setLoading(false);
+    const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if(e.key === "Enter") {
+            const updatedParams = resetPageAndSearch(searchParams, searchInput);
+            push(`?${updatedParams.toString()}`);
         }
-    }, []);
+    };
 
-    useEffect(() => {
-        if(!searchHolder && searchQuery) setSearchQuery('');
-    }, [searchHolder, searchQuery]);
+    const handleSearchCancel = () => {
+        setSearchInput("");
+        const updatedParams = resetPageAndSearch(searchParams, "");
+        push(`?${updatedParams.toString()}`);
+    };
 
-    useEffect(() => {
-        void fetchPokemonList(page, searchQuery);
-    }, [page, fetchPokemonList, searchQuery]);
+
+    const handlePageChange = (newPage: number) => {
+        const updatedParams = updatePageParam(searchParams, newPage);
+        push(`?${updatedParams.toString()}`);
+    };
+
 
     return (
         <div className="flex flex-col justify-center items-center pb-16">
@@ -74,16 +46,18 @@ export default function PokemonListSection({ onPageChange }: PokemonListSectionP
                             <Search className="w-6 h-6" />
                         </span>
                         <input
-                            type="text"
-                            value={searchHolder}
-                            onChange={(e) => setSearchHolder(e.target.value)}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
-                                    onPageChange(1);
-                                    setPage(1);
-                                    setSearchQuery(searchHolder);
+                            type="search"
+                            enterKeyHint="search"
+                            value={searchInput}
+                            onChange={(e) => setSearchInput(e.target.value)}
+                            onKeyDown={handleSearch}
+                            onInput={(e) => {
+                                const target = e.target as HTMLInputElement;
+                                if (target.value === "") {
+                                    handleSearchCancel();
                                 }
                             }}
+
                             placeholder="Search Pokémon..."
                             className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/15 backdrop-blur-md border border-white/30 shadow-[0_6px_20px_rgba(0,0,0,0.25)] text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/60 focus:border-white/60 transition"
                         />
@@ -91,13 +65,10 @@ export default function PokemonListSection({ onPageChange }: PokemonListSectionP
                     </label>
 
                     <Pagination
-                        page={page}
+                        page={currentPage}
                         totalPages={totalPages}
                         loading={loading}
-                        onPageChangeAction={(newPage) => {
-                            setPage(newPage);
-                            onPageChange(newPage);
-                        }}
+                        onPageChangeAction={handlePageChange}
                     />
                 </div>
 
@@ -106,7 +77,7 @@ export default function PokemonListSection({ onPageChange }: PokemonListSectionP
                 ) : error ? (
                     <p className="text-red-500">Error: {error}</p>
                 ) : (
-                    <PokemonListDisplay clearSearch={clearSearch} pokemonList={pokemonList} />
+                    <PokemonListDisplay clearSearch={()=>{}} pokemonList={pokemonList} />
                 )}
 
             </div>
