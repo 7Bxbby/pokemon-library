@@ -5,7 +5,7 @@ import Pagination from "@/components/Pagination";
 import PokemonListDisplay from "@/components/PokemonListDisplay";
 import PokemonListDisplaySkeleton from "@/components/skeleton/PokemonListDisplaySkeleton";
 import {useRouter, useSearchParams} from "next/navigation";
-import {usePokemonSearch} from "@/app/hooks/usePokemonSearch";
+import {usePokemonSearch} from "@/hooks/usePokemonSearch";
 import React, {useEffect, useState} from "react";
 import { resetPageAndSearch, updatePageParam } from "@/lib/url-utils";
 
