@@ -26,11 +26,9 @@ export default function PokemonListSection() {
         setSearchInput(input);
         if (input) {
             if (input.length >= 2) {
-                if (pokemonList.length > 1) {
-                    setIsSearching(true);
-                    const updatedParams = resetPageAndSearch(searchParams, input);
-                    push(`?${updatedParams.toString()}`);
-                }
+                setIsSearching(true);
+                const updatedParams = resetPageAndSearch(searchParams, input);
+                push(`?${updatedParams.toString()}`);
             }
         }else {
             handleSearchCancel();
