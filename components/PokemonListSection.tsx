@@ -22,11 +22,18 @@ export default function PokemonListSection() {
         setIsSearching(false);
     }, [loading])
 
-    const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if(e.key === "Enter") {
-            setIsSearching(true);
-            const updatedParams = resetPageAndSearch(searchParams, searchInput);
-            push(`?${updatedParams.toString()}`);
+    const handleSearch = (input: string) => {
+        setSearchInput(input);
+        if (input) {
+            if (input.length >= 2) {
+                if (pokemonList.length > 1) {
+                    setIsSearching(true);
+                    const updatedParams = resetPageAndSearch(searchParams, input);
+                    push(`?${updatedParams.toString()}`);
+                }
+            }
+        }else {
+            handleSearchCancel();
         }
     };
 
@@ -46,7 +53,7 @@ export default function PokemonListSection() {
 
 
     return (
-        <div className="flex flex-col justify-center items-center pb-16">
+        <div className="flex flex-col justify-center items-center pb-2">
             <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-12 px-0 sm:px-8 md:max-w-[700px] lg:max-w-[900px] xl:max-w-[1350px]">
                 <div className="col-span-full gap-4 sm:gap-16 flex-col sm:flex-row items-center sm:justify-between flex -mb-5 max-[537px]:mt-0 max-[640px]:mt-8 sm:mt-10">
                     <div className="flex items-center">
@@ -58,15 +65,7 @@ export default function PokemonListSection() {
                                 type="search"
                                 enterKeyHint="search"
                                 value={searchInput}
-                                onChange={(e) => setSearchInput(e.target.value)}
-                                onKeyDown={handleSearch}
-                                onInput={(e) => {
-                                    const target = e.target as HTMLInputElement;
-                                    if (target.value === "") {
-                                        handleSearchCancel();
-                                    }
-                                }}
-
+                                onChange={(e) => handleSearch(e.target.value)}
                                 placeholder="Search Pokémon..."
                                 className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/15 backdrop-blur-md border border-white/30 shadow-[0_6px_20px_rgba(0,0,0,0.25)] text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/60 focus:border-white/60 transition"
                             />
