@@ -35,7 +35,6 @@ export default function PokemonDetailPage({ params }: { params: Promise<{ name: 
             }
             const data: Pokemon = await response.json();
             setPokemon(data);
-            console.log(data);
         } catch (e: unknown) {
             setPokemon(null);
             if (e instanceof Error) {
@@ -63,8 +62,8 @@ export default function PokemonDetailPage({ params }: { params: Promise<{ name: 
         return (
             <div className="mt-16 flex items-center justify-center">
                 <div className="text-center">
-                    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-white dark:border-black mx-auto"></div>
-                    <p className="mt-4 text-white dark:text-black text-xl">Loading Pokémon...</p>
+                    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-white mx-auto"></div>
+                    <p className="mt-4 text-white text-xl">Loading Pokémon...</p>
                 </div>
             </div>
         );
