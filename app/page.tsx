@@ -1,36 +1,15 @@
-'use client';
-
-import { Suspense, useCallback } from 'react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-
 import PokemonListSection from '@/components/PokemonListSection';
 import PokemonListDisplaySkeleton from '@/components/skeleton/PokemonListDisplaySkeleton';
-
-
-function getUpdatedQueryString(searchParams: URLSearchParams, page: number): string {
-    const params = new URLSearchParams(searchParams.toString());
-    if (page <= 1) params.delete('page');
-    else params.set('page', String(page));
-    return params.toString();
-}
-
-function HomeContent() {
-    const { replace } = useRouter();
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
-
-    const handlePageChange = useCallback((page: number) => {
-        const qs = getUpdatedQueryString(searchParams, page);
-        replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
-    }, [replace, pathname, searchParams]);
-
-    return <PokemonListSection onPageChange={handlePageChange} />;
-}
+import {Suspense} from "react";
 
 export default function Home() {
     return (
-        <Suspense fallback={<PokemonListDisplaySkeleton />}>
-            <HomeContent />
+        <Suspense fallback={
+            <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-12 px-0 sm:px-8 md:max-w-[700px] lg:max-w-[900px] xl:max-w-[1350px]">
+                <PokemonListDisplaySkeleton />
+            </div>
+        }>
+            <PokemonListSection />
         </Suspense>
     );
 }
