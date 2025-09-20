@@ -1,4 +1,18 @@
+'use client'
+import {useEffect, useState} from "react";
+
 export default function PokemonListDisplay() {
+    const [shouldRender, setShouldRender] = useState(false);
+    useEffect(() => {
+        const timer = setTimeout(() => setShouldRender(true), 200);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    if (!shouldRender) {
+        return null;
+    }
+
     return <>
         {Array.from({ length: 12 }).map((_, i) => (
             <div
