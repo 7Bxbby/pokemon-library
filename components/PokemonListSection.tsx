@@ -40,7 +40,7 @@ export default function PokemonListSection() {
     return (
         <div className="flex flex-col justify-center items-center pb-16">
             <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-12 px-0 sm:px-8 md:max-w-[700px] lg:max-w-[900px] xl:max-w-[1350px]">
-                <div className="col-span-full gap-4 sm:gap-16 flex-col sm:flex-row sm:justify-between flex -mb-5 max-[537px]:mt-0 max-[640px]:mt-8 sm:mt-10">
+                <div className="col-span-full gap-4 sm:gap-16 flex-col sm:flex-row items-center sm:justify-between flex -mb-5 max-[537px]:mt-0 max-[640px]:mt-8 sm:mt-10">
                     <label className="group relative block mx-3 sm:mx-0 max-w-xs">
                         <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 z-10 text-white opacity-80">
                             <Search className="w-6 h-6" />
