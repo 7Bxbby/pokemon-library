@@ -84,10 +84,10 @@ export default function PokemonDetailPage({ params }: { params: Promise<{ name: 
         );
     }
     return (
-        <div className="min-h-screen max-[450px]:px-0 px-4 pb-8 text-white scroll-m-6" ref={detailsRef}>
+        <div className="min-h-screen max-[450px]:px-0 px-4 pb-8 text-white scroll-m-6" id={'pokemon-details'} ref={detailsRef}>
             <div className="mx-auto max-w-[1100px]">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-[450px]:px-1 p-8">
-                    <div className="space-y-8 order-2 lg:order-1">
+                    <div className="space-y-8 order-2 lg:order-1" id={'pokemon-details-stats'}>
                         <div className="space-y-4 hidden lg:block">
                             <div className="flex items-center gap-3">
                                 <h1 className="text-5xl font-extrabold capitalize tracking-tight">{pokemon.name}</h1>

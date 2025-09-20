@@ -1,6 +1,6 @@
 import PokemonListSection from '@/components/PokemonListSection';
 import PokemonListDisplaySkeleton from '@/components/skeleton/PokemonListDisplaySkeleton';
-import {Suspense} from "react";
+import React, {Suspense} from "react";
 
 export default function Home() {
     return (

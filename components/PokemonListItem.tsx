@@ -12,7 +12,8 @@ export default function PokemonListItem({pokemon, index}: Props) {
     const [loading, setLoading] = useState(false);
     return <Link
         href={`/pokemon/${pokemon.name}`}
-        className="flex flex-col justify-center items-center cursor-pointer"
+        id={`pokemon-list-item-${index}`}
+        className="flex flex-col justify-center items-center cursor-pointer pokemon-list-item"
         key={pokemon.name}
         onClick={() => setTimeout(() => setLoading(true), 300)}
     >

@@ -75,7 +75,7 @@ export default function TypePage({ params }: { params: Promise<{ name: string }>
     }
 
     return (
-        <div className="mx-auto max-w-7xl mt-5 p-6 text-white">
+        <div className="mx-auto max-w-7xl mt-5 p-6 text-white" id={'pokemon-type-details'}>
             <h1 className="mx-auto text-4xl max-w-fit font-bold capitalize flex items-center gap-3 group cursor-pointer transition-all duration-500">
                 <Image
                     src={typesIconMap[pokemonTypeDetails.name]}

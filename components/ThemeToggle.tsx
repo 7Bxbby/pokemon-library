@@ -14,6 +14,7 @@ export default function ThemeToggle() {
     const Icon = theme !== 'dark' ? Sun : Moon;
 
     return <Icon
+        id="theme-toggle"
         onClick={() => toggle()}
         width={64}
         height={64}

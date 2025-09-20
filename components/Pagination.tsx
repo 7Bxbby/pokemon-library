@@ -26,7 +26,7 @@ export default function Pagination({ page, totalPages, loading, onPageChangeActi
         "px-3 py-2 rounded-lg cursor-default text-xs min-[300px]:text-md min-[400px]:text-lg bg-white/20 border border-white/20 text-white font-semibold";
 
     return (
-        <nav className="flex items-center gap-0.5 min-[300px]:gap-2 justify-center select-none">
+        <nav className="flex items-center gap-0.5 min-[300px]:gap-2 justify-center select-none" id={'pokemon-list-pagination'}>
             <button className={baseBtn} onClick={() => go(page - 1)} disabled={loading || page === 1} aria-label="Previous page">
                 ‹
             </button>
