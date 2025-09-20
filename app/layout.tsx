@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import React from "react";
+import React, {Suspense} from "react";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import Image from "next/image";
 import logo from "@/public/logo.webp";
@@ -48,7 +48,9 @@ export default function RootLayout({
                           className="select-none w-full max-w-[800px] h-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer" // Dodano "cursor-pointer" dla wskaźnika
                       />
                   </Link>
-                  <TutorialDriver/>
+                  <Suspense>
+                      <TutorialDriver/>
+                  </Suspense>
                   <ThemeToggle />
               </div>
               {children}
