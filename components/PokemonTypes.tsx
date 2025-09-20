@@ -8,7 +8,7 @@ interface PokemonTypesProps {
 
 export default function PokemonTypes({ types }: PokemonTypesProps) {
     return (
-        <div className="flex justify-center lg:justify-start items-center gap-4 mt-2 ml-1">
+        <div className="flex flex-wrap justify-center lg:justify-start items-center gap-4 mt-2 ml-1">
             {types.map((type) => (
                 <Link
                     href={`/pokemon/types/${type}`}
