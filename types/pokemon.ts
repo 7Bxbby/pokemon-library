@@ -74,3 +74,36 @@ export interface PokemonListResponse {
 export interface PokemonType {
     [key: string]: string;
 }
+
+interface DamageRelation {
+    name: string;
+    url: string;
+}
+
+interface PokemonEntry {
+    pokemon: {
+        name: string;
+        url: string;
+    };
+}
+
+interface Move {
+    name: string;
+    url: string;
+}
+
+
+export interface PokemonTypeDetails {
+    id: number;
+    name: string;
+    damage_relations: {
+        double_damage_from: DamageRelation[];
+        double_damage_to: DamageRelation[];
+        half_damage_from: DamageRelation[];
+        half_damage_to: DamageRelation[];
+        no_damage_from: DamageRelation[];
+        no_damage_to: DamageRelation[];
+    };
+    pokemon: PokemonEntry[];
+    moves: Move[];
+}
