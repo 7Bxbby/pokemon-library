@@ -3,12 +3,15 @@ import Link from "next/link";
 import {typesIconMap} from "@/lib/pokemon-utils";
 
 interface PokemonTypesProps {
-    types: string[];
+    types: string[],
+    id?: string
 }
 
-export default function PokemonTypes({ types }: PokemonTypesProps) {
+export default function PokemonTypes({types, id}: PokemonTypesProps) {
     return (
-        <div id={'pokemon-details-types'} className="flex flex-wrap justify-center lg:justify-start items-center gap-4 mt-2 ml-1">
+        <div
+            className="flex flex-wrap justify-center lg:justify-start items-center gap-4 mt-2 ml-1 pokemon-detail-types"
+            id={id}>
             {types.map((type) => (
                 <Link
                     href={`/pokemon/types/${type}`}

@@ -93,7 +93,7 @@ export default function PokemonDetailPage({ params }: { params: Promise<{ name: 
                                 <h1 className="text-5xl font-extrabold capitalize tracking-tight">{pokemon.name}</h1>
                             </div>
 
-                            <PokemonTypes types={pokemon.types} />
+                            <PokemonTypes id={'pokemon-types-mobile'} types={pokemon.types} />
 
                             <p className="max-w-prose text-white/70">
                                 A balanced Pokémon with versatile moves and solid survivability.
@@ -133,7 +133,7 @@ export default function PokemonDetailPage({ params }: { params: Promise<{ name: 
                                 <h1 className="max-[280px]:text-2xl mx-auto text-center text-4xl font-extrabold capitalize tracking-tight">{pokemon.name}</h1>
                             </div>
 
-                            <PokemonTypes types={pokemon.types} />
+                            <PokemonTypes id={'pokemon-types-desktop'} types={pokemon.types} />
 
                             <div className="text-white/70 text-center px-1 break-words">
                                 A balanced Pokémon with versatile moves and solid survivability.
