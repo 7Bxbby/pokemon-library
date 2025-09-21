@@ -26,7 +26,7 @@ Make sure you have `Node.js` ≥16 installed on your system.
 ### Installation Steps
 1. Clone the repository:
 ``` bash
-   git clone <repository-url>
+   git clone https://github.com/7Bxbby/pokemon-library
    cd pokemon-library
 ```
 1. Install dependencies:
