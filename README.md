@@ -378,3 +378,15 @@ The file `pokemon.ts` contains type definitions for Pokémon data structures, us
 - Use `PokemonRaw` for raw API responses and transform it into `Pokemon` for application usage.
 - The `PokemonListItem` is tailored for list views (e.g., grids or cards).
 - `PokemonTypeDetails` is essential for implementing type matchups and battle-related logic.
+
+---
+
+# Interactive Tutorial using `driver.js`
+This project includes an interactive tutorial powered by [driver.js](http://driverjs.com), a lightweight and user-friendly library for showcasing features in your web application.
+#### Features
+- Highlights key parts of the interface, making it easier for users to understand the app's functionality.
+- Supports responsive behavior, offering tailored tooltips for both desktop and mobile layouts.
+- Custom animations, overlays, and dynamic behavior based on user actions.
+
+#### How It Works
+The tutorial is implemented using the `TutorialDriver.tsx` component, which initializes `driver.js` and manages the tutorial steps. Upon triggering the tutorial (e.g., by clicking on a help icon), the library highlights specific elements of the UI and displays popovers explaining their functionality.
