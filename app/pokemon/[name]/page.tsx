@@ -125,7 +125,8 @@ export default function PokemonDetailPage({ params }: { params: Promise<{ name: 
                                 <p className="mb-2 text-white/70 text-sm">Base Experience</p>
                                 <div className={'h-3 w-full rounded-full bg-black/20 dark:bg-white/10 overflow-hidden'}>
                                     <div
-                                        className={`w-0 h-full rounded-full transition-[width] duration-700 ease-out bg-yellow-400`}
+                                        className={`w-0 h-full rounded-full transition-[width] duration-700 ease-out bg-yellow-400 `}
+                                        style={{ width: `${(pokemon.baseExperience/608) * 100}%` }}
                                     />
                                 </div>
                                 <div className="mt-2 text-right font-semibold">{pokemon.baseExperience} XP</div>
