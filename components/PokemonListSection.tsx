@@ -1,47 +1,48 @@
 'use client';
 
-import {Search} from "lucide-react";
+import { Search } from "lucide-react";
 import Pagination from "@/components/Pagination";
 import PokemonListDisplay from "@/components/PokemonListDisplay";
 import PokemonListDisplaySkeleton from "@/components/skeleton/PokemonListDisplaySkeleton";
-import {useRouter, useSearchParams} from "next/navigation";
-import {usePokemonSearch} from "@/hooks/usePokemonSearch";
-import React, {useEffect, useState} from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { usePokemonSearch } from "@/hooks/usePokemonSearch";
+import React, { useRef, useState, useEffect } from "react";
 import { resetPageAndSearch, updatePageParam } from "@/lib/url-utils";
 
 export default function PokemonListSection() {
     const { pokemonList, totalPages, loading, error } = usePokemonSearch();
     const searchParams = useSearchParams();
-    const [isSearching, setIsSearching] = useState(false);
     const { push } = useRouter();
 
     const [searchInput, setSearchInput] = useState(searchParams.get("search") ?? "");
+    const [isSearching, setIsSearching] = useState(false);
     const currentPage = Number(searchParams.get("page") ?? "1");
 
-    useEffect(() => {
-        setIsSearching(false);
-    }, [loading])
+    const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
     const handleSearch = (input: string) => {
         setSearchInput(input);
-        if (input) {
-            if (input.length >= 2) {
+        if (debounceRef.current) {
+            clearTimeout(debounceRef.current);
+        }
+        debounceRef.current = setTimeout(() => {
+            if (input.trim().length === 0) {
+                handleSearchCancel();
+            } else if (input.trim().length >= 2) {
                 setIsSearching(true);
                 const updatedParams = resetPageAndSearch(searchParams, input);
                 push(`?${updatedParams.toString()}`);
             }
-        }else {
-            handleSearchCancel();
-        }
+        }, 300);
     };
 
     const handleSearchCancel = () => {
-        setIsSearching(true);
+        if (!isSearching && searchInput.trim().length === 0) return;
+        setIsSearching(false);
         setSearchInput("");
         const updatedParams = resetPageAndSearch(searchParams, "");
         push(`?${updatedParams.toString()}`);
     };
-
 
     const handlePageChange = (newPage: number) => {
         setIsSearching(true);
@@ -49,6 +50,11 @@ export default function PokemonListSection() {
         push(`?${updatedParams.toString()}`);
     };
 
+    useEffect(() => {
+        if (!loading) {
+            setIsSearching(false);
+        }
+    }, [loading]);
 
     return (
         <div className="flex flex-col justify-center items-center pb-2" id="pokemon-list-display">
@@ -56,9 +62,9 @@ export default function PokemonListSection() {
                 <div className="col-span-full gap-4 sm:gap-16 flex-col sm:flex-row items-center sm:justify-between flex -mb-5 max-[537px]:mt-0 max-[640px]:mt-8 sm:mt-10">
                     <div className="flex items-center">
                         <label className="group relative block mx-3 sm:mx-0 max-w-xs" id="pokemon-list-search-input">
-                        <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 z-10 text-white opacity-80">
-                            <Search className="w-6 h-6" />
-                        </span>
+              <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 z-10 text-white opacity-80">
+                <Search className="w-6 h-6" />
+              </span>
                             <input
                                 type="search"
                                 enterKeyHint="search"
@@ -86,7 +92,6 @@ export default function PokemonListSection() {
                 ) : (
                     <PokemonListDisplay clearSearch={handleSearchCancel} pokemonList={pokemonList} />
                 )}
-
             </div>
         </div>
     );
