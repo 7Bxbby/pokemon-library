@@ -39,7 +39,7 @@ driverObj.setSteps([
     {
         element: "#pokemon-list-search-input",
         popover: {
-            title: "Find Your Favorites!",
+            title: "Type 'Pikachu' to Find him!",
             description: "Use this input box to search for any Pokémon by name.",
             showButtons: [],
         }
