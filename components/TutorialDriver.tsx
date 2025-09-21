@@ -77,9 +77,7 @@ driverObj.setSteps([
         }
     },
     {
-        element: window.innerWidth > 1024
-            ? "#pokemon-detail-types-desktop"
-            : "#pokemon-detail-types-mobile",
+        element: "#pokemon-detail-types",
         popover: {
             title: "Pokémon Types",
             description: "This section lists all the types of the Pokémon. Click a type to see detailed information.",
